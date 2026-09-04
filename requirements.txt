@@ -1,0 +1,6 @@
+flask
+google-auth
+python-dotenv
+flask-wtf
+flask-limiter
+flask-talisman

@@ -1,0 +1,16 @@
+# Secretos (nunca commitear)
+.env*
+!.env.example
+
+# Entorno virtual
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Datos de usuarios (persistencia local; en producción viven en el disco persistente de Render)
+data/

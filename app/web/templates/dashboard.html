@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>GC Habits</title>
+</head>
+<body>
+    <h1>GC Habits</h1>
+    {% if recovered %}
+    <p class="notice">Detectamos un problema con tus datos guardados y los reiniciamos.</p>
+    {% elif not data.habits %}
+    <p>¡Bienvenido! Crea tu primer hábito para empezar.</p>
+    {% endif %}
+    <ul>
+        {% for habit in data.habits %}
+        <li>{{ habit.name }}</li>
+        {% endfor %}
+    </ul>
+    <form method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">Cerrar sesión</button>
+    </form>
+</body>
+</html>
