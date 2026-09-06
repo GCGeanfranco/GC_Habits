@@ -34,11 +34,17 @@ jobs:
       - name: Run tests with coverage
         run: pytest --cov=app --cov-report=term-missing --cov-report=json
 
-      - name: Fail if app/storage/ coverage is below 80%
+      - name: Fail if coverage thresholds are not met
         run: |
           python - <<'EOF'
           import json
           import sys
+
+          thresholds = {
+              "app/storage/": 80.0,
+              "app/habits/": 100.0,
+              "app/web/routes.py": 80.0,
+          }
 
           with open("coverage.json", encoding="utf-8") as f:
               report = json.load(f)
@@ -46,15 +52,16 @@ jobs:
           low = []
           for path, info in report["files"].items():
               normalized = path.replace("\\", "/")
-              if normalized.startswith("app/storage/"):
-                  pct = float(info["summary"]["percent_covered_display"])
-                  if pct < 80:
-                      low.append((path, pct))
+              for prefix, min_pct in thresholds.items():
+                  if normalized.startswith(prefix):
+                      pct = float(info["summary"]["percent_covered_display"])
+                      if pct < min_pct:
+                          low.append((path, pct, min_pct))
 
           if low:
-              for path, pct in low:
-                  print(f"FAIL: {path} coverage {pct}% < 80%")
+              for path, pct, min_pct in low:
+                  print(f"FAIL: {path} coverage {pct}% < {min_pct}%")
               sys.exit(1)
 
-          print("OK: app/storage/ coverage >= 80%")
+          print("OK: cobertura por archivo cumple umbrales")
           EOF

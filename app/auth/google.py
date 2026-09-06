@@ -51,8 +51,13 @@ class GoogleProvider(AuthProvider):
     def verify_token(self, code: str) -> dict:
         token_data = self._exchange_code(code)
         id_token_str = token_data["id_token"]
+        # Tolerancia de reloj (30s) para la verificación del id_token: el
+        # reloj del servidor local puede ir unos segundos atrasado respecto
+        # al de Google (detectado en pruebas locales: "Token used too early").
+        # 30s es un valor conservador estándar para verificación OIDC.
         claims = id_token.verify_oauth2_token(
-            id_token_str, _UrllibRequest(), self.client_id
+            id_token_str, _UrllibRequest(), self.client_id,
+            clock_skew_in_seconds=30,
         )
         if claims.get("iss") not in ALLOWED_ISSUERS:
             raise ValueError("Emisor del token no permitido (iss).")

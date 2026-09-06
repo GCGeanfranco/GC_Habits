@@ -6,14 +6,35 @@
 </head>
 <body>
     <h1>GC Habits</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flashes">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     {% if recovered %}
     <p class="notice">Detectamos un problema con tus datos guardados y los reiniciamos.</p>
     {% elif not data.habits %}
     <p>¡Bienvenido! Crea tu primer hábito para empezar.</p>
     {% endif %}
+    <h2>Crear hábito</h2>
+    <form method="post" action="{{ url_for('web.create_habit') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="text" name="name" maxlength="100" required>
+        <button type="submit">Crear hábito</button>
+    </form>
     <ul>
-        {% for habit in data.habits %}
-        <li>{{ habit.name }}</li>
+        {% for habit in habits %}
+        <li>
+            {{ habit.name }} — Racha: {{ habit.current_streak }} — Récord: {{ habit.record_streak }}
+            <form method="post" action="{{ url_for('web.mark_habit_done', habit_id=habit.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit">Marcar como hecho</button>
+            </form>
+        </li>
         {% endfor %}
     </ul>
     <form method="post" action="{{ url_for('auth.logout') }}">

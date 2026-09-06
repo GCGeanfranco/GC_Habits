@@ -35,7 +35,7 @@ def _mock_exchange(monkeypatch, provider, token_response=None, error=None):
 def _mock_verify(monkeypatch, claims=None, error=None):
     import google.oauth2.id_token
 
-    def fake_verify(token, request, audience):
+    def fake_verify(token, request, audience, clock_skew_in_seconds=0):
         if error is not None:
             raise error
         return claims
@@ -97,6 +97,23 @@ def test_verify_token_rejects_missing_exp(monkeypatch, provider):
 
     with pytest.raises(ValueError, match="expirado"):
         provider.verify_token("auth-code")
+
+
+def test_verify_token_passes_clock_skew_to_verify(monkeypatch, provider):
+    import google.oauth2.id_token
+
+    calls = {}
+
+    def fake_verify(token, request, audience, clock_skew_in_seconds=0):
+        calls["clock_skew_in_seconds"] = clock_skew_in_seconds
+        return _valid_claims()
+
+    monkeypatch.setattr(google.oauth2.id_token, "verify_oauth2_token", fake_verify)
+    _mock_exchange(monkeypatch, provider, token_response={"id_token": "fake-token"})
+
+    provider.verify_token("auth-code")
+
+    assert calls["clock_skew_in_seconds"] == 30
 
 
 def test_verify_token_propagates_network_error(monkeypatch, provider):

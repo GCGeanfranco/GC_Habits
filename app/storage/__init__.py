@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -5,7 +6,7 @@ from flask import session
 
 from .fileops import _atomic_write, _read_with_corrupt_flag, _read_with_corrupt_handling
 
-USER_DATA_DIR = Path("/data/users")
+USER_DATA_DIR = Path(os.environ.get("USER_DATA_DIR", "/data/users"))
 
 
 def _now_iso() -> str:

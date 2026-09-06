@@ -63,7 +63,27 @@ def test_dashboard_shows_recovery_message_on_corrupt_file(client, data_dir):
 
 def test_dashboard_with_habits_lists_them(client, data_dir):
     (data_dir / "user_1.json").write_text(
-        json.dumps({"habits": [{"name": "correr"}], "metadata": {}}), encoding="utf-8"
+        json.dumps(
+            {
+                "habits": [
+                    {
+                        "id": "existing01",
+                        "name": "correr",
+                        "normalized_name": "correr",
+                        "current_streak": 0,
+                        "record_streak": 0,
+                        "lifelines_available": 0,
+                        "lifelines_unlocked": False,
+                        "lifelines_unlock_date": None,
+                        "lifelines_last_recovery_date": None,
+                        "last_processed_date": None,
+                        "last_day_status": "none",
+                    }
+                ],
+                "metadata": {},
+            }
+        ),
+        encoding="utf-8",
     )
     _login(client)
 
