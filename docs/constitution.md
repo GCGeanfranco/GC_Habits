@@ -69,4 +69,4 @@
 | **Sanitización de inputs** | Nombre de hábito: máx. 100 chars, solo Unicode letras/números/espacios/`_-.` (regex `^[\p{L}\p{N} _\-.]{1,100}$`). Rechazar si no cumple. Escape HTML al renderizar en plantillas (Jinja2 `autoescape=true` por defecto). |
 | **CSRF** | Flask-WTF (`CSRFProtect`) habilitado globalmente. Todos los formularios POST (crear/marcar/borrar hábito) requieren token CSRF válido. |
 | **Rate limiting login** | Límite: 5 intentos/15 min por IP en `/auth/login` y `/auth/callback`. Implementar con `flask-limiter` (storage en memoria, suficiente para 5 usuarios). |
-| **Cabeceras HTTP** | Middleware `Talisman` o `after_request` que añada: `Content-Security-Policy: default-src 'self'; script-src 'self'`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`. |
+| **Cabeceras HTTP** | Middleware `Talisman` o `after_request` que añada: `Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' fonts.googleapis.com; font-src 'self' fonts.gstatic.com`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`. |
