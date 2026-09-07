@@ -54,12 +54,12 @@ Tareas de 20-30 min en orden de dependencia. TDD donde es verificable con pytest
 
 ## Fase 2 — JS (`app/static/js/habits.js`)
 
-- [ ] **T2.1** Feedback instantáneo del botón "Marcar como hecho": `addEventListener("click", ...)` sobre cada `.btn-mark-done` que cambia el texto a "Hecho ✓", añade la clase `.is-done` y deshabilita el botón — sin `preventDefault()`, el formulario sigue su envío normal.
+- [x] **T2.1** Feedback instantáneo del botón "Marcar como hecho": `addEventListener("click", ...)` sobre cada `.btn-mark-done` que cambia el texto a "Hecho ✓", añade la clase `.is-done` y deshabilita el botón — sin `preventDefault()`, el formulario sigue su envío normal.
   - RF/RNF: RF-08, RF-09, RF-10
   - Hecho cuando: prueba manual en navegador — clic cambia el botón visualmente antes de la recarga; clic repetido antes de la recarga no reenvía el formulario; con JS deshabilitado en el navegador, el botón sigue marcando el hábito con normalidad (recarga directa).
   - Tipo: implementación (JS de navegador, no testeable con pytest).
 
-- [ ] **T2.2** Contador de palabras en vivo sobre el input `name` del formulario de alta (`input` event → cuenta palabras con `trim().split(/\s+/)`, actualiza `#word-counter`, clase `.counter-over` si supera 8).
+- [x] **T2.2** Contador de palabras en vivo sobre el input `name` del formulario de alta (`input` event → cuenta palabras con `trim().split(/\s+/)`, actualiza `#word-counter`, clase `.counter-over` si supera 8).
   - RF/RNF: RF-11
   - Hecho cuando: prueba manual — escribir en el campo actualiza el contador en tiempo real; al superar 8 palabras el contador cambia de estilo pero el formulario sigue siendo enviable (la validación real sigue en el servidor).
   - Tipo: implementación.

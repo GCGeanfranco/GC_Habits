@@ -1,1 +1,17 @@
-// habits.js — placeholder. Contenido real en Fase 2 (T2.1–T2.2).
+document.querySelectorAll(".btn-mark-done").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    btn.textContent = "Hecho ✓";
+    btn.classList.add("is-done");
+    btn.disabled = true;
+  });
+});
+
+const nameInput = document.querySelector("#habit-name");
+const counter = document.querySelector("#word-counter");
+nameInput?.addEventListener("input", () => {
+  const words = nameInput.value.trim().split(/\s+/).filter(Boolean).length;
+  if (counter) {
+    counter.textContent = `${words} / 8 palabras`;
+    counter.classList.toggle("counter-over", words > 8);
+  }
+});
