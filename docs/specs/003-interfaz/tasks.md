@@ -70,7 +70,7 @@ Tareas de 20-30 min en orden de dependencia. TDD donde es verificable con pytest
 
 **Tarea delicada — único cambio de lógica de negocio de esta spec.**
 
-- [ ] **T3.1** En `mark_habit_done`, capturar `old_record = habit["record_streak"]` antes de llamar a `mark_done()`; tras la llamada, si `not already_done and updated["current_streak"] > 0 and updated["current_streak"] >= old_record`, hacer `flash(updated["id"], "new_record")` antes del flash de éxito existente.
+- [x] **T3.1** En `mark_habit_done`, capturar `old_record = habit["record_streak"]` antes de llamar a `mark_done()`; tras la llamada, si `not already_done and updated["current_streak"] > 0 and updated["current_streak"] >= old_record`, hacer `flash(updated["id"], "new_record")` antes del flash de éxito existente.
   - RF/RNF: RF-06
   - Hecho cuando: tests cubren los 4 casos: (1) primer marcado de un hábito nuevo (récord 0→1) flashea `new_record` con el `id` correcto; (2) racha que iguala el récord anterior tras un reinicio flashea; (3) racha que sube pero sin alcanzar el récord anterior NO flashea `new_record` (sí el flash de éxito normal); (4) hábito ya marcado hoy (`already_done=True`) NO flashea `new_record` aunque numéricamente calzara. Todos los tests existentes de `test_t4_2_mark_habit_done.py` (Spec 002) siguen en verde.
   - Tipo: TDD. **Tarea delicada.**

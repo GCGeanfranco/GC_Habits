@@ -55,12 +55,18 @@ def mark_habit_done(habit_id):
     if idx is None:
         abort(404)
     habit = data["habits"][idx]
+    old_record = habit["record_streak"]
     updated, already_done = mark_done(habit, _today_utc())
     data["habits"][idx] = updated
     storage.save(data)
     if already_done:
         flash(f"'{updated['name']}' ya estaba marcado como hecho hoy.", "info")
     else:
+        if (
+            updated["current_streak"] > 0
+            and updated["current_streak"] >= old_record
+        ):
+            flash(updated["id"], "new_record")
         flash(
             f"'{updated['name']}' marcado como hecho. Racha: {updated['current_streak']} días.",
             "success",
