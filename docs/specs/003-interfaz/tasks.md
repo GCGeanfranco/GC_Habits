@@ -6,22 +6,22 @@ Tareas de 20-30 min en orden de dependencia. TDD donde es verificable con pytest
 
 ## Fase 0 — Configuración base (CSP, estáticos, layout compartido)
 
-- [ ] **T0.1** `app/__init__.py`: ampliar el `content_security_policy` de `Talisman` con `style-src: ['self', https://fonts.googleapis.com]` y `font-src: ['self', https://fonts.gstatic.com]`, sin tocar `default-src` ni `script-src`.
+- [x] **T0.1** `app/__init__.py`: ampliar el `content_security_policy` de `Talisman` con `style-src: ['self', https://fonts.googleapis.com]` y `font-src: ['self', https://fonts.gstatic.com]`, sin tocar `default-src` ni `script-src`.
   - RF/RNF: RF-02, Constitución §9 (diff ya acordado)
   - Hecho cuando: test de integración sobre cualquier respuesta (ej. `GET /login`) verifica que el header `Content-Security-Policy` contiene `style-src` con `fonts.googleapis.com` y `font-src` con `fonts.gstatic.com`, y que `script-src 'self'` sigue intacto (sin `unsafe-inline`).
   - Tipo: TDD.
 
-- [ ] **T0.2** Copiar `logo_gc_habits_transparent.png` (actualmente en la raíz del repo) a `app/static/img/logo_gc_habits_transparent.png`.
+- [x] **T0.2** Copiar `logo_gc_habits_transparent.png` (actualmente en la raíz del repo) a `app/static/img/logo_gc_habits_transparent.png`.
   - RF/RNF: RF-02b
   - Hecho cuando: test de integración hace `GET /static/img/logo_gc_habits_transparent.png` y recibe `200` con `Content-Type: image/png`.
   - Tipo: TDD.
 
-- [ ] **T0.3** Crear `app/static/css/style.css` y `app/static/js/habits.js` (ambos con un comentario placeholder, aún sin contenido real).
+- [x] **T0.3** Crear `app/static/css/style.css` y `app/static/js/habits.js` (ambos con un comentario placeholder, aún sin contenido real).
   - RF/RNF: RNF (sin build step, estáticos servidos por Flask)
   - Hecho cuando: tests verifican `GET /static/css/style.css` → 200 `text/css`, `GET /static/js/habits.js` → 200 `text/javascript` (o `application/javascript` según versión de Flask/Werkzeug).
   - Tipo: TDD.
 
-- [ ] **T0.4** Crear `app/web/templates/base.html`: `<head>` con `<meta name="viewport">`, `<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">`, `preconnect` + `<link>` a Google Fonts (Poppins 600/700), `<script src="{{ url_for('static', filename='js/habits.js') }}" defer></script>`; `<header>` con el logo (`img` a `img/logo_gc_habits_transparent.png`) y wordmark; una única zona de mensajes flash (`get_flashed_messages(with_categories=true)`, categorías `success`/`error`/`info`); `{% block content %}{% endblock %}`.
+- [x] **T0.4** Crear `app/web/templates/base.html`: `<head>` con `<meta name="viewport">`, `<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">`, `preconnect` + `<link>` a Google Fonts (Poppins 600/700), `<script src="{{ url_for('static', filename='js/habits.js') }}" defer></script>`; `<header>` con el logo (`img` a `img/logo_gc_habits_transparent.png`) y wordmark; una única zona de mensajes flash (`get_flashed_messages(with_categories=true)`, categorías `success`/`error`/`info`); `{% block content %}{% endblock %}`.
   - RF/RNF: RF-01, RF-02, RF-02b, RF-12
   - Hecho cuando: un test con una plantilla hija mínima (`{% extends "base.html" %}{% block content %}OK{% endblock %}`) confirma, vía `test_client`, presencia del `<link rel="stylesheet">` con el `href` correcto, el `<img>` del logo, y el `<script src=...defer>`; ningún `<style>` ni `<script>` inline en el HTML resultante (grep sobre el body de la respuesta).
   - Tipo: TDD.

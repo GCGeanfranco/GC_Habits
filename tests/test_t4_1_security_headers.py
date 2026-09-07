@@ -12,7 +12,9 @@ def test_security_headers_present_on_login(client):
     resp = client.get("/login")
     assert (
         resp.headers.get("Content-Security-Policy")
-        == "default-src 'self'; script-src 'self'"
+        == "default-src 'self'; script-src 'self'; "
+        "style-src 'self' https://fonts.googleapis.com; "
+        "font-src 'self' https://fonts.gstatic.com"
     )
     assert resp.headers.get("X-Content-Type-Options") == "nosniff"
     assert resp.headers.get("X-Frame-Options") == "DENY"

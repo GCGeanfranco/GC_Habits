@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GC Habits</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/habits.js') }}" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <img
+            class="logo"
+            src="{{ url_for('static', filename='img/logo_gc_habits_transparent.png') }}"
+            alt="Logo GC Habits"
+        >
+        <span class="wordmark">GC Habits</span>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                {% if category in ["success", "error", "info"] %}
+                <p class="flash flash-{{ category }}">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,1 @@
+// habits.js — placeholder. Contenido real en Fase 2 (T2.1–T2.2).

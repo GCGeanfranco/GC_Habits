@@ -73,7 +73,12 @@ def create_app(auth_provider=None):
 
     Talisman(
         app,
-        content_security_policy={"default-src": "'self'", "script-src": "'self'"},
+        content_security_policy={
+            "default-src": "'self'",
+            "script-src": "'self'",
+            "style-src": ["'self'", "https://fonts.googleapis.com"],
+            "font-src": ["'self'", "https://fonts.gstatic.com"],
+        },
         force_https=is_production,
         frame_options="DENY",
         referrer_policy="strict-origin-when-cross-origin",
