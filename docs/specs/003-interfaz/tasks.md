@@ -30,22 +30,22 @@ Tareas de 20-30 min en orden de dependencia. TDD donde es verificable con pytest
 
 ## Fase 1 — CSS (`app/static/css/style.css`)
 
-- [ ] **T1.1** Variables CSS de paleta (`:root { --color-primary: #ff5722; --color-primary-dark: #b02f00; --color-secondary: #4b41e1; --color-tertiary: #00a572; --color-error: #ba1a1a; --color-bg: #ffffff; --color-text: #1a1a1a; }`), reset básico (`box-sizing`, márgenes), tipografía base (`font-family` de sistema para body, Poppins para `h1`/`h2`/clases de métrica).
+- [x] **T1.1** Variables CSS de paleta (`:root { --color-primary: #ff5722; --color-primary-dark: #b02f00; --color-secondary: #4b41e1; --color-tertiary: #00a572; --color-error: #ba1a1a; --color-bg: #ffffff; --color-text: #1a1a1a; }`), reset básico (`box-sizing`, márgenes), tipografía base (`font-family` de sistema para body, Poppins para `h1`/`h2`/clases de métrica).
   - RF/RNF: RF-01, RF-02
   - Hecho cuando: revisión visual manual — el color de fondo, texto y encabezados coincide con la paleta acordada en la spec.
   - Tipo: implementación.
 
-- [ ] **T1.2** Estilos de layout y componentes: header con logo, `.habit-card` (tarjeta de hábito), los 4 estados visuales de salvavidas (bloqueado con progreso, activo, usado, re-bloqueado), `.btn-mark-done` (con estado `.is-done` para el JS de Fase 2), mensajes flash por categoría usando `--color-tertiary` (éxito), `--color-error` (error) y `--color-secondary` (información), `.badge-record` (insignia "¡Nuevo récord!").
+- [x] **T1.2** Estilos de layout y componentes: header con logo, `.habit-card` (tarjeta de hábito), los 4 estados visuales de salvavidas (bloqueado con progreso, activo, usado, re-bloqueado), `.btn-mark-done` (con estado `.is-done` para el JS de Fase 2), mensajes flash por categoría usando `--color-tertiary` (éxito), `--color-error` (error) y `--color-secondary` (información), `.badge-record` (insignia "¡Nuevo récord!").
   - RF/RNF: RF-03, RF-04, RF-05, RF-06, RF-08, RF-12
   - Hecho cuando: revisión visual manual de cada uno de los 4 estados de salvavidas (forzando datos de prueba) y de los 3 colores de mensaje flash.
   - Tipo: implementación.
 
-- [ ] **T1.3** Responsive (breakpoint único `max-width: 640px`, `.habit-card` a columna, `.dashboard-grid` a una sola columna) y truncamiento de nombre de hábito largo (`.habit-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }` + atributo `title` en la plantilla).
+- [x] **T1.3** Responsive (breakpoint único `max-width: 640px`, `.habit-card` a columna, `.dashboard-grid` a una sola columna) y truncamiento de nombre de hábito largo (`.habit-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }` + atributo `title` en la plantilla).
   - RF/RNF: RF-14
   - Hecho cuando: revisión manual en DevTools con viewport móvil (< 640px) sin overflow horizontal ni elementos solapados; un nombre de hábito de 100 caracteres se trunca con elipsis y el `title` muestra el nombre completo al pasar el cursor.
   - Tipo: implementación.
 
-- [ ] **T1.4** Acentos decorativos del login: `.login-page::before`/`::after` con `radial-gradient` de baja opacidad usando `--color-primary`, posicionados detrás de la tarjeta de login.
+- [x] **T1.4** Acentos decorativos del login: `.login-page::before`/`::after` con `radial-gradient` de baja opacidad usando `--color-primary`, posicionados detrás de la tarjeta de login.
   - RF/RNF: RF-13
   - Hecho cuando: revisión visual manual — los acentos son sutiles (no comprometen la legibilidad del formulario) sobre fondo claro.
   - Tipo: implementación.
