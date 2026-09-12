@@ -1,45 +1,49 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <title>GC Habits</title>
-</head>
-<body>
-    <h1>GC Habits</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <ul class="flashes">
-        {% for category, message in messages %}
-        <li class="{{ category }}">{{ message }}</li>
+{% extends "base.html" %}
+
+{% block content %}
+{% set record_ids = get_flashed_messages(category_filter=["new_record"]) %}
+{% if recovered %}
+<p class="notice">Detectamos un problema con tus datos guardados y los reiniciamos.</p>
+{% elif not data.habits %}
+<p>¡Bienvenido! Crea tu primer hábito para empezar.</p>
+{% endif %}
+<h2>Crear hábito</h2>
+<form method="post" action="{{ url_for('web.create_habit') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="text" name="name" maxlength="100" required id="habit-name">
+    <span id="word-counter">0 / 8 palabras</span>
+    <button type="submit" class="btn">Crear hábito</button>
+</form>
+<div class="dashboard-grid">
+    {% for habit in habits %}
+    <div class="habit-card">
+        <div class="habit-info">
+            <span class="habit-name" title="{{ habit.name }}">{{ habit.name }}</span>
+            <span class="habit-stats">Racha: {{ habit.current_streak }} — Récord: {{ habit.record_streak }}</span>
+        </div>
+        {% if habit.lifelines_unlocked %}
+        {% for i in range(2) %}
+        <span
+            class="lifeline {% if i < habit.lifelines_available %}lifeline-active{% else %}lifeline-used{% endif %}">✓</span>
         {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    {% if recovered %}
-    <p class="notice">Detectamos un problema con tus datos guardados y los reiniciamos.</p>
-    {% elif not data.habits %}
-    <p>¡Bienvenido! Crea tu primer hábito para empezar.</p>
-    {% endif %}
-    <h2>Crear hábito</h2>
-    <form method="post" action="{{ url_for('web.create_habit') }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <input type="text" name="name" maxlength="100" required>
-        <button type="submit">Crear hábito</button>
-    </form>
-    <ul>
-        {% for habit in habits %}
-        <li>
-            {{ habit.name }} — Racha: {{ habit.current_streak }} — Récord: {{ habit.record_streak }}
-            <form method="post" action="{{ url_for('web.mark_habit_done', habit_id=habit.id) }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit">Marcar como hecho</button>
-            </form>
-        </li>
+        {% else %}
+        {% for i in range(2) %}
+        <span class="lifeline lifeline-locked">✗</span>
         {% endfor %}
-    </ul>
-    <form method="post" action="{{ url_for('auth.logout') }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button type="submit">Cerrar sesión</button>
-    </form>
-</body>
-</html>
+        <span>{{ habit.current_streak }}/15 días para desbloquear</span>
+        {% endif %}
+        {% if habit.id in record_ids %}
+        <span class="badge badge-record">¡Nuevo récord!</span>
+        {% endif %}
+        <form method="post" action="{{ url_for('web.mark_habit_done', habit_id=habit.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn-mark-done">Marcar como hecho</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+<form method="post" action="{{ url_for('auth.logout') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn">Cerrar sesión</button>
+</form>
+{% endblock %}

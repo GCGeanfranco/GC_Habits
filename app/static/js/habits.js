@@ -2,7 +2,9 @@ document.querySelectorAll(".btn-mark-done").forEach((btn) => {
   btn.addEventListener("click", () => {
     btn.textContent = "Hecho ✓";
     btn.classList.add("is-done");
-    btn.disabled = true;
+    setTimeout(() => {
+      btn.disabled = true;
+    }, 0);
   });
 });
 

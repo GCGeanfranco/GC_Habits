@@ -50,6 +50,22 @@ Tareas de 20-30 min en orden de dependencia. TDD donde es verificable con pytest
   - Hecho cuando: revisión visual manual — los acentos son sutiles (no comprometen la legibilidad del formulario) sobre fondo claro.
   - Tipo: implementación.
 
+
+- [x] **T1.5** (añadida durante implementación — hueco detectado en revisión visual) Estilo base para elementos genéricos fuera de `.habit-card`/`.btn-mark-done`: `button` (o una clase `.btn` aplicada a "Crear hábito" y "Cerrar sesión") con padding, borde, `border-radius`, colores consistentes con la paleta; `input[type="text"]` con padding, borde y `border-radius` acordes al resto de tarjetas.
+  - RF/RNF: RF-01, Criterios de finalización (consistencia visual de toda la página, no solo de la tarjeta de hábito)
+  - Hecho cuando: revisión visual manual — ningún botón ni input de la página conserva el estilo por defecto del navegador.
+  - Tipo: implementación.
+
+- [x] **T1.6** (añadida durante implementación — hueco detectado en revisión visual) El enlace "Iniciar sesión con Google" en `login.html` sigue siendo texto plano subrayado, sin estilo de botón, a diferencia del resto de la interfaz.
+  - RF/RNF: RF-13
+  - Hecho cuando: el enlace se ve como un botón consistente con la paleta (borde, padding, `border-radius`), sin necesidad de agregar un asset de logo de Google.
+  - Tipo: implementación.
+  
+- [x] **T1.7** (añadida durante implementación — hueco detectado en revisión visual) El nombre del hábito se trunca de forma agresiva en `.habit-card` porque compite en la misma línea con "— Racha: X — Récord: Y", los 2 salvavidas y el botón. Reestructurar para que el nombre y las métricas de racha/récord queden apiladas en un bloque propio (`.habit-info`) que reciba el espacio flexible (`flex: 1 1 auto; min-width: 0`), dejando salvavidas y botón con su ancho natural.
+  - RF/RNF: RF-14 (truncamiento), RF-03
+  - Hecho cuando: un nombre de hábito de longitud moderada (ej. "Ejercitarse") ya no se trunca innecesariamente; el truncamiento con elipsis solo ocurre con nombres realmente largos (cercanos al límite de 100 caracteres/8 palabras).
+  - Tipo: TDD (toca `dashboard.html`, verificable con `test_client` revisando la nueva estructura de clases).
+
 ---
 
 ## Fase 2 — JS (`app/static/js/habits.js`)
@@ -79,22 +95,22 @@ Tareas de 20-30 min en orden de dependencia. TDD donde es verificable con pytest
 
 ## Fase 4 — Plantillas: login, dashboard, 403
 
-- [ ] **T4.1** `login.html`: `{% extends "base.html" %}`, tarjeta centrada con logo, mensaje de error si existe, botón "Iniciar sesión con Google", `<body>`/wrapper con clase `login-page` para los acentos CSS de T1.4.
+- [x] **T4.1** `login.html`: `{% extends "base.html" %}`, tarjeta centrada con logo, mensaje de error si existe, botón "Iniciar sesión con Google", `<body>`/wrapper con clase `login-page` para los acentos CSS de T1.4.
   - RF/RNF: RF-02b, RF-13
   - Hecho cuando: test de integración sobre `GET /login` confirma que la respuesta hereda los elementos de `base.html` (link a `style.css`, logo) y conserva el enlace de login de Google y el mensaje de error cuando corresponde (mismo comportamiento que antes, solo cambia el envoltorio visual).
   - Tipo: TDD.
 
-- [ ] **T4.2** `403_limit.html`: `{% extends "base.html" %}`, sin cambiar el contenido (mensaje de límite + enlace de vuelta al login).
+- [x] **T4.2** `403_limit.html`: `{% extends "base.html" %}`, sin cambiar el contenido (mensaje de límite + enlace de vuelta al login).
   - RF/RNF: Alcance visual §"Páginas Spec 001"
   - Hecho cuando: test de integración fuerza la condición de 5 usuarios y confirma que la respuesta 403 hereda `base.html` (logo, CSS) y conserva el texto "Límite de usuarios alcanzado." y el enlace a `/login`.
   - Tipo: TDD.
 
-- [ ] **T4.3** `dashboard.html` — salvavidas y badge de récord: `{% extends "base.html" %}`; por cada hábito, renderizar los 2 slots de salvavidas según `lifelines_unlocked`/`lifelines_available` (RF-04, RF-05); mostrar `<span class="badge badge-record">¡Nuevo récord!</span>` cuando `habit.id` esté en `get_flashed_messages(category_filter=["new_record"])`.
+- [x] **T4.3** `dashboard.html` — salvavidas y badge de récord: `{% extends "base.html" %}`; por cada hábito, renderizar los 2 slots de salvavidas según `lifelines_unlocked`/`lifelines_available` (RF-04, RF-05); mostrar `<span class="badge badge-record">¡Nuevo récord!</span>` cuando `habit.id` esté en `get_flashed_messages(category_filter=["new_record"])`.
   - RF/RNF: RF-04, RF-05, RF-06
   - Hecho cuando: tests de integración cubren: hábito con `lifelines_unlocked=False` muestra progreso "X/15"; hábito con `lifelines_unlocked=True` muestra los 2 slots (activo/usado según `lifelines_available`); tras un `POST /habits/<id>/done` que rompe récord, el `GET /dashboard` de la redirección incluye el badge; un `GET /dashboard` posterior (nueva petición, sin el flash) NO lo incluye.
   - Tipo: TDD. **Tarea delicada** (depende de T3.1).
 
-- [ ] **T4.4** `dashboard.html` — formulario y botón: añadir `<span id="word-counter">` junto al input `name` (ya tiene `maxlength="100"`, no se toca); añadir clase `btn-mark-done` a cada botón "Marcar como hecho"; aplicar `.habit-name` con `title="{{ habit.name }}"` al nombre renderizado.
+- [x] **T4.4** `dashboard.html` — formulario y botón: añadir `<span id="word-counter">` junto al input `name` (ya tiene `maxlength="100"`, no se toca); añadir clase `btn-mark-done` a cada botón "Marcar como hecho"; aplicar `.habit-name` con `title="{{ habit.name }}"` al nombre renderizado.
   - RF/RNF: RF-11 (contador), RF-08 (gancho de clase para JS), RF-14 (truncamiento)
   - Hecho cuando: test de integración confirma la presencia de `id="word-counter"`, la clase `btn-mark-done` en cada botón, y el atributo `title` con el nombre completo del hábito en `.habit-name`.
   - Tipo: TDD.
@@ -103,7 +119,7 @@ Tareas de 20-30 min en orden de dependencia. TDD donde es verificable con pytest
 
 ## Fase 5 — Validación final
 
-- [ ] **T5.1** Ejecutar la suite completa y confirmar que no hay regresiones: todos los tests de las Specs 001 y 002 siguen en verde, cobertura de `app/web/routes.py` se mantiene ≥80%.
+- [x] **T5.1** Ejecutar la suite completa y confirmar que no hay regresiones: todos los tests de las Specs 001 y 002 siguen en verde, cobertura de `app/web/routes.py` se mantiene ≥80%.
   - RF/RNF: Criterios de finalización de la spec
   - Hecho cuando: `pytest -v` en verde (salvo los 4 fallos preexistentes ya documentados de `test_t0_3_secrets.py`); `coverage` confirma ≥80% en `app/web/routes.py`.
   - Tipo: validación.
